@@ -8,14 +8,14 @@ function App() {
   const [result, setResult] = useState(0);
 
   const handleRandom = function () {
-    setResult(randomInt(min,max));
+    setResult(Number(randomInt(min, max)));
   };
 
-  const onChange=function(e){
-    if(e.target.id==='min'){
-      setMin(e.target.value);
-    }else if(e.target.id==="max"){ 
-      setmax(e.target.value);
+  const onChange = function (e) {
+    if (e.target.id === 'min') {
+      setMin(Number(e.target.value));
+    } else if (e.target.id === "max") {
+      setmax(Number(e.target.value));
     }
   }
 
@@ -38,7 +38,7 @@ function App() {
             <p>
               Max
           </p>
-            <input id="max" type="number" value={max} onChange={onChange}/>
+            <input id="max" type="number" value={max} onChange={onChange} />
           </div>
         </div>
         <div className="button">
@@ -51,8 +51,8 @@ function App() {
   );
 }
 
-function randomInt(min, max) {
-  let num = Math.random() * (max - min + 1) + min;
+function randomInt(minVal, maxVal) {
+  let num = minVal + (Math.random() * (maxVal - minVal + 1));
   return Math.floor(num);
 }
 
