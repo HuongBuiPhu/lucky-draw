@@ -23,6 +23,12 @@ color: #fff;
   background: #04042b;
 }
 
+.App .container .input-file{
+  background: rgb(154, 201, 228);
+  padding: 20px;
+  color: aliceblue;
+}
+
 .App .container .result {
   background: cadetblue;
   padding: 20px;
