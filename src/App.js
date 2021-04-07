@@ -3,24 +3,38 @@ import React, { useState } from 'react';
 import * as XLSX from 'xlsx';
 
 let items = [];
+let eMin = 0, eMax = 0;
 
 function App() {
 
   const [min, setMin] = useState(0);
   const [max, setmax] = useState(0);
+  const [duplicate, setDuplicate] = useState(true);
   const [result, setResult] = useState(0);
 
   const handleRandom = function () {
-    //setResult(Number(randomInt(min, max)));
-    setResult(Number(randomAndRemove(items)));
+    setResult(randomInList(items, duplicate));
     console.log(items);
   };
 
   const onChange = function (e) {
     if (e.target.id === 'min') {
-      setMin(Number(e.target.value));
+      setMin(e.target.value);
+      eMin = e.target.value;
     } else if (e.target.id === "max") {
-      setmax(Number(e.target.value));
+      setmax(e.target.value);
+      eMax = e.target.value;
+    }
+
+    items = [];
+    if (eMax <= eMin) {
+      items.push(eMin);
+    } else {
+      let i = eMin;
+      while (i <= eMax) {
+        items.push(i);
+        i++;
+      }
     }
   };
 
@@ -43,8 +57,10 @@ function App() {
     });
 
     promise.then((d) => {
+      console.log(d);
+      items = [];
       d.forEach(element => {
-        items.push(element.__rowNum__);
+        items.push(element.a);
       });
       console.log(items);
     });
@@ -52,23 +68,10 @@ function App() {
   }
 
   return (
-    // <>
-    //   <Router>
-    //     <NavBar />
-    //     <Switch>
-    //       <Route path="/" exact />
-    //     </Switch>
-    //   </Router>
-    // </>
     <div className="App">
       <div className="container">
         <div className="input-file">
           <input type="file" onChange={handleInputFile} />
-        </div>
-        <div className="result">
-          <p>
-            Random number: <span>{result}</span>
-          </p>
         </div>
         <div className="option">
           <div>
@@ -83,6 +86,15 @@ function App() {
           </p>
             <input id="max" type="number" value={max} onChange={onChange} />
           </div>
+        </div>
+        <div className="check-duplicate">
+          <input type="checkbox" defaultChecked={duplicate} onChange={() => setDuplicate(!duplicate)} />
+          <label>Duplicate</label>
+        </div>
+        <div className="result">
+          <p>
+            Random number: <span>{result}</span>
+          </p>
         </div>
         <div className="button">
           <button onClick={handleRandom} >
@@ -99,16 +111,14 @@ function randomInt(minVal, maxVal) {
   return Math.floor(num);
 }
 
-function randomInList(list) {
+function randomInList(list, canDuplicate) {
   let size = list.length;
   let index = randomInt(0, size - 1);
-  return list[index];
-}
-
-function randomAndRemove(list) {
-  let size = list.length;
-  let index = randomInt(0, size - 1);
-  return list.splice(index, 1);
+  if (!canDuplicate) {
+    return list.splice(index, 1);
+  } else {
+    return list[index];
+  }
 }
 
 export default App;

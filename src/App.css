@@ -31,18 +31,19 @@ color: #fff;
 
 .App .container .result {
   background: cadetblue;
-  padding: 20px;
+  padding: 30px;
 }
 
 .App .container .result p span {
 color: black;
 font-weight: 600;
+margin-left: 20px;
 }
 
 .App .option {
   display: flex;
   justify-content: space-between;
-  padding: 60px 0;
+  padding: 30px 0;
   width: 100%;
 }
 
@@ -64,6 +65,7 @@ font-weight: 600;
   align-self: flex-end;
   border: none;
   outline: none;
+  margin-top: 20px;
   padding: 14px;
   width: 100%;
   font-size: 22px;
