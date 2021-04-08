@@ -14,6 +14,11 @@ const audioClips = [
   { sound: xoso2, label: 'Xo-so-2', index: 1 }
 ];
 
+// const audios = [
+//   { sound: new Howl({ src: [xoso], loop: true, volume: 1.0 }), name: 'original', index: 0 },
+//   { sound: new Howl({ src: [xoso2], loop: true, volume: 1.0 }), name: 'remix', index: 1 },
+// ]
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -25,6 +30,7 @@ class App extends Component {
       result: 0,
       music: currSound,
       playing: false,
+      loading: true,
     }
 
     this.handleRandom = this.handleRandom.bind(this);
@@ -54,7 +60,8 @@ class App extends Component {
     this.sound = new Howl({
       src: [audioClip.sound],
       loop: true,
-      volume: 1.0
+      volume: 1.0,
+      html5: true
     });
     this.sound.play();
     currSound = audioClip.index;
