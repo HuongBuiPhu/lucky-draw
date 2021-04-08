@@ -1,28 +1,103 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import * as XLSX from 'xlsx';
+import { Howl } from 'howler';
+import xoso from './resources/xo-so-original.mp3';
+import xoso2 from './resources/xo-so-remix-dan-tranh.mp3';
 
 let items = [];
 let eMin = 0, eMax = 0;
+let currSound = 1;
 
-function App() {
+const audioClips = [
+  { sound: xoso, label: 'Xo-so', index: 0 },
+  { sound: xoso2, label: 'Xo-so-2', index: 1 }
+];
 
-  const [min, setMin] = useState(0);
-  const [max, setmax] = useState(0);
-  const [duplicate, setDuplicate] = useState(true);
-  const [result, setResult] = useState(0);
+class App extends Component {
+  constructor(props) {
+    super(props);
 
-  const handleRandom = function () {
-    setResult(randomInList(items, duplicate));
+    this.state = {
+      min: 0,
+      max: 0,
+      duplicate: true,
+      result: 0,
+      music: currSound,
+      playing: false,
+    }
+
+    this.handleRandom = this.handleRandom.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.handleInputFile = this.handleInputFile.bind(this);
+    this.playAudio = this.playAudio.bind(this);
+    this.onChangeMusic = this.onChangeMusic.bind(this);
+    this.playMusic = this.playMusic.bind(this);
+  }
+
+  playAudio = function (audioClip, isPlay) {
+    if (!isPlay) {
+      if (this.sound)
+        this.sound.pause();
+      return;
+    }
+
+    if (this.sound) {
+      if (currSound === audioClip.index) {
+        this.sound.play();
+        return;
+      } else {
+        this.sound.stop();
+        delete this.sound;
+      }
+    }
+    this.sound = new Howl({
+      src: [audioClip.sound],
+      loop: true,
+      volume: 1.0
+    });
+    this.sound.play();
+    currSound = audioClip.index;
+  }
+
+  onChangeMusic = function (e) {
+    this.setState({
+      music: e.target.value
+    });
+    if (this.state.playing)
+      this.playAudio(audioClips[e.target.value], true);
+  }
+
+  playMusic = function () {
+    this.setState({
+      playing: !this.state.playing
+    })
+    this.playAudio(audioClips[this.state.music], !this.state.playing);
+  }
+
+  handleRandom = function () {
+    this.setState({
+      result: ""
+    });
+    setTimeout(() => {
+      this.setState({
+        result: randomInList(items, this.state.duplicate)
+      });
+    }, 4000);
+
     console.log(items);
   };
 
-  const onChange = function (e) {
+  onChange = function (e) {
     if (e.target.id === 'min') {
-      setMin(e.target.value);
+      this.setState({
+        min: e.target.value
+      });
       eMin = e.target.value;
     } else if (e.target.id === "max") {
-      setmax(e.target.value);
+      this.setState({
+        max: e.target.value
+      });
       eMax = e.target.value;
     }
 
@@ -38,7 +113,7 @@ function App() {
     }
   };
 
-  const handleInputFile = function (e) {
+  handleInputFile = function (e) {
     const path = e.target.files[0];
     const promise = new Promise((resolve, reject) => {
       const fileReader = new FileReader();
@@ -66,44 +141,58 @@ function App() {
     });
 
   }
-
-  return (
-    <div className="App">
-      <div className="container">
-        <div className="input-file">
-          <input type="file" onChange={handleInputFile} />
-        </div>
-        <div className="option">
+  render() {
+    return (
+      <div className="App">
+        <div className="container">
           <div>
-            <p>
-              Min
-          </p>
-            <input id="min" type="number" value={min} onChange={onChange} />
+            <select name="music" defaultValue={this.state.music} onChange={this.onChangeMusic}>
+              <option value={0}>original</option>
+              <option value={1}>remix</option>
+            </select>
+            <button onClick={this.playMusic}>
+              <i className={this.state.playing ? 'fas fa-play' : 'fas fa-pause'} />
+            </button>
           </div>
-          <div>
-            <p>
-              Max
-          </p>
-            <input id="max" type="number" value={max} onChange={onChange} />
+          <div className="input-file">
+            <input type="file" onChange={this.handleInputFile} />
           </div>
-        </div>
-        <div className="check-duplicate">
-          <input type="checkbox" defaultChecked={duplicate} onChange={() => setDuplicate(!duplicate)} />
-          <label>Duplicate</label>
-        </div>
-        <div className="result">
-          <p>
-            Random number: <span>{result}</span>
+          <div className="option">
+            <div>
+              <p>
+                Min
           </p>
-        </div>
-        <div className="button">
-          <button onClick={handleRandom} >
-            Random
+              <input id="min" type="number" value={this.state.min} onChange={this.onChange} />
+            </div>
+            <div>
+              <p>
+                Max
+          </p>
+              <input id="max" type="number" value={this.state.max} onChange={this.onChange} />
+            </div>
+          </div>
+          <div className="check-duplicate">
+            <input type="checkbox" defaultChecked={this.state.duplicate}
+              onChange={() => this.setState({
+                duplicate: !this.state.duplicate
+              })
+              } />
+            <label>Duplicate</label>
+          </div>
+          <div className="result">
+            <p>
+              Random number: <span>{this.state.result}</span>
+            </p>
+          </div>
+          <div className="button">
+            <button onClick={this.handleRandom} >
+              Random
           </button>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 function randomInt(minVal, maxVal) {
