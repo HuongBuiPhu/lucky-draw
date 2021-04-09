@@ -2,16 +2,23 @@ import './App.css';
 import React, { Component } from 'react';
 import * as XLSX from 'xlsx';
 import { Howl } from 'howler';
-import xoso from './resources/xo-so-original.mp3';
+import xoso1 from './resources/xo-so-original.mp3';
 import xoso2 from './resources/xo-so-remix-dan-tranh.mp3';
+import xoso3 from './resources/xo-so-remix-2.mp3';
+import bond from './resources/bond_victory.mp3';
+import blackjack from './resources/blackjack_remix.mp3';
+import LoadingAnim from './components/LoadingAnim';
 
 let items = [];
 let eMin = 0, eMax = 0;
-let currSound = 1;
+let currSound = 0;
 
 const audioClips = [
-  { sound: xoso, label: 'Xo-so', index: 0 },
-  { sound: xoso2, label: 'Xo-so-2', index: 1 }
+  { sound: xoso1, label: 'Melodia dla Zuzi original', index: 0 },
+  { sound: xoso2, label: 'Melodia dla Zuzi remix 1', index: 1 },
+  { sound: xoso3, label: 'Melodia dla Zuzi remix 2', index: 2 },
+  { sound: bond, label: 'Bond - Vicotry', index: 3 },
+  { sound: blackjack, label: 'Blackjack ft. Melodia dla Zuzi', index: 4 }
 ];
 
 // const audios = [
@@ -86,13 +93,12 @@ class App extends Component {
     this.setState({
       result: ""
     });
+    let timeout = randomInt(40, 80);
     setTimeout(() => {
       this.setState({
         result: randomInList(items, this.state.duplicate)
       });
-    }, 4000);
-
-    console.log(items);
+    }, timeout * 100);
   };
 
   onChange = function (e) {
@@ -146,19 +152,22 @@ class App extends Component {
       });
       console.log(items);
     });
-
   }
+
   render() {
     return (
       <div className="App">
         <div className="container">
-          <div>
-            <select name="music" defaultValue={this.state.music} onChange={this.onChangeMusic}>
-              <option value={0}>original</option>
-              <option value={1}>remix</option>
+          <div className="music-container">
+            <select className="audio-selector" defaultValue={this.state.music} onChange={this.onChangeMusic}>
+              <option value={0}>{audioClips[0].label}</option>
+              <option value={1}>{audioClips[1].label}</option>
+              <option value={2}>{audioClips[2].label}</option>
+              <option value={3}>{audioClips[3].label}</option>
+              <option value={4}>{audioClips[4].label}</option>
             </select>
-            <button onClick={this.playMusic}>
-              <i className={this.state.playing ? 'fas fa-play' : 'fas fa-pause'} />
+            <button className="play-music" onClick={this.playMusic}>
+              <i className={this.state.playing ? 'fas fa-pause' : 'fas fa-play'} />
             </button>
           </div>
           <div className="input-file">
@@ -166,15 +175,11 @@ class App extends Component {
           </div>
           <div className="option">
             <div>
-              <p>
-                Min
-          </p>
+              <p>Mi</p>
               <input id="min" type="number" value={this.state.min} onChange={this.onChange} />
             </div>
             <div>
-              <p>
-                Max
-          </p>
+              <p>Max</p>
               <input id="max" type="number" value={this.state.max} onChange={this.onChange} />
             </div>
           </div>
@@ -188,7 +193,7 @@ class App extends Component {
           </div>
           <div className="result">
             <p>
-              Random number: <span>{this.state.result}</span>
+              {this.state.result === "" ? <LoadingAnim/> : this.state.result}
             </p>
           </div>
           <div className="button">

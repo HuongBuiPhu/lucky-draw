@@ -32,12 +32,16 @@ color: #fff;
 .App .container .result {
   background: cadetblue;
   padding: 30px;
+  height: 100px;
+  align-content: center;
+  border-radius: 10px;
 }
 
-.App .container .result p span {
+.App .container .result p {
 color: black;
 font-weight: 600;
-margin-left: 20px;
+font-size: 30px;
+text-align: center;
 }
 
 .App .option {
@@ -45,6 +49,22 @@ margin-left: 20px;
   justify-content: space-between;
   padding: 30px 0;
   width: 100%;
+}
+
+.App .music-container {
+  width: 100%;
+}
+
+.App .music-container .play-music{
+  width: 100%;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+.App .music-container .audio-selector{
+  width: 100%;
+  margin-right: 10px;
+  height: 50px;
 }
 
 .App .option div {
@@ -72,4 +92,5 @@ margin-left: 20px;
   cursor: pointer;
   background: #292977;
   color: #fff;
+  border-radius: 10px;
 }
