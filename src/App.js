@@ -21,11 +21,6 @@ const audioClips = [
   { sound: blackjack, label: 'Blackjack ft. Melodia dla Zuzi', index: 4 }
 ];
 
-// const audios = [
-//   { sound: new Howl({ src: [xoso], loop: true, volume: 1.0 }), name: 'original', index: 0 },
-//   { sound: new Howl({ src: [xoso2], loop: true, volume: 1.0 }), name: 'remix', index: 1 },
-// ]
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -38,6 +33,8 @@ class App extends Component {
       music: currSound,
       playing: false,
       loading: true,
+      disableButton: false,
+      background: 1.0
     }
 
     this.handleRandom = this.handleRandom.bind(this);
@@ -91,12 +88,16 @@ class App extends Component {
 
   handleRandom = function () {
     this.setState({
-      result: ""
+      result: "",
+      disableButton: true,
+      background: 0.3
     });
     let timeout = randomInt(40, 80);
     setTimeout(() => {
       this.setState({
-        result: randomInList(items, this.state.duplicate)
+        result: randomInList(items, this.state.duplicate),
+        disableButton: false,
+        background: 1.0
       });
     }, timeout * 100);
   };
@@ -193,11 +194,11 @@ class App extends Component {
           </div>
           <div className="result">
             <p>
-              {this.state.result === "" ? <LoadingAnim/> : this.state.result}
+              {this.state.result === "" ? <LoadingAnim /> : this.state.result}
             </p>
           </div>
           <div className="button">
-            <button onClick={this.handleRandom} >
+            <button disabled={this.state.disableButton} style={{ opacity: this.state.background }} onClick={this.handleRandom} >
               Random
           </button>
           </div>
