@@ -107,12 +107,12 @@ class App extends Component {
       this.setState({
         min: e.target.value
       });
-      eMin = e.target.value;
+      eMin = parseInt(e.target.value);
     } else if (e.target.id === "max") {
       this.setState({
         max: e.target.value
       });
-      eMax = e.target.value;
+      eMax = parseInt(e.target.value);
     }
 
     items = [];
@@ -151,7 +151,6 @@ class App extends Component {
       d.forEach(element => {
         items.push(element.a);
       });
-      console.log(items);
     });
   }
 
@@ -176,7 +175,7 @@ class App extends Component {
           </div>
           <div className="option">
             <div>
-              <p>Mi</p>
+              <p>Min</p>
               <input id="min" type="number" value={this.state.min} onChange={this.onChange} />
             </div>
             <div>
