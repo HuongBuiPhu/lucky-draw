@@ -8,6 +8,7 @@ import xoso3 from './resources/xo-so-remix-2.mp3';
 import bond from './resources/bond_victory.mp3';
 import blackjack from './resources/blackjack_remix.mp3';
 import LoadingAnim from './components/LoadingAnim';
+import confetti from 'canvas-confetti';
 
 let items = [];
 let eMin = 0, eMax = 0;
@@ -35,7 +36,9 @@ class App extends Component {
       loading: true,
       disableButton: false,
       background: 1.0
-    }
+    };
+
+    this.rDivRect = { x: 0, y: 0, width: 0, height: 0 };
 
     this.handleRandom = this.handleRandom.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -99,7 +102,18 @@ class App extends Component {
         disableButton: false,
         background: 1.0
       });
+
+      let canvas = document.getElementById("confetti");
+      canvas.confetti = canvas.confetti || confetti.create(canvas, { resize: true });
+      canvas.confetti({
+        particleCount: 130,
+        spread: 60,
+        origin: { y: 1.0 },
+        startVelocity: 20,
+      });
     }, timeout * 100);
+
+    this.rDivRect = document.getElementById("result").getBoundingClientRect();
   };
 
   onChange = function (e) {
@@ -191,10 +205,14 @@ class App extends Component {
               } />
             <label>Duplicate</label>
           </div>
-          <div className="result">
-            <p>
-              {this.state.result === "" ? <LoadingAnim /> : this.state.result}
-            </p>
+          <div className="result-container" style={{ position: "relative" }}>
+            <canvas id="confetti" className="confetti" width={this.rDivRect.width} height={this.rDivRect.height}
+              style={{ position: "absolute", zIndex: 1 }} />
+            <div id="result" className="result">
+              <p>
+                {this.state.result === "" ? <LoadingAnim /> : this.state.result}
+              </p>
+            </div>
           </div>
           <div className="button">
             <button disabled={this.state.disableButton} style={{ opacity: this.state.background }} onClick={this.handleRandom} >
