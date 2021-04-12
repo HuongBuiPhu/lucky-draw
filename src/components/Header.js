@@ -140,7 +140,8 @@ class Header extends Component {
                         </div>
                     </div>
                     <div className="menu-icon" onClick={this.onClickMenu}>
-                        <i className={this.state.openMenu ? "fas fa-times fa-lg" : "fas fa-bars fa-lg"} />
+                        {/* <i className={this.state.openMenu ? "fas fa-times fa-lg" : "fas fa-bars fa-lg"} /> */}
+                        <i className="fas fa-cog fa-lg" />
                     </div>
                 </div>
                 <div className={this.state.openMenu ? "option-menu active" : "option-menu"}>
