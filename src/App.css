@@ -8,8 +8,10 @@ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 .App {
 width: 100%;
 min-height: 100vh;
-background:#5555ab;
+background:linear-gradient(to right, #3c55c2, #aabdd3);
 display: flex;
+justify-content: center;
+flex-direction: column;
 color: #fff;
 }
 
@@ -21,12 +23,15 @@ color: #fff;
   display: flex;
   flex-direction: column;
   background: #04042b;
+  border-radius: 5px;
 }
 
 .App .container .input-file{
   background: rgb(154, 201, 228);
-  padding: 20px;
+  padding: 30px;
   color: aliceblue;
+  margin-bottom: 10px;
+  border-radius: 5px;
 }
 
 .App .container .result-container .result {
@@ -52,29 +57,14 @@ text-align: center;
 .App .option {
   display: flex;
   justify-content: space-between;
-  padding: 30px 0;
+  padding: 20px 0;
+  margin-bottom: 5px;
   width: 100%;
-}
-
-.App .music-container {
-  width: 100%;
-}
-
-.App .music-container .play-music{
-  width: 100%;
-  margin-bottom: 20px;
-  border-radius: 10px;
-}
-
-.App .music-container .audio-selector{
-  width: 100%;
-  margin-right: 10px;
-  height: 50px;
 }
 
 .App .option div {
   width: 100%;
-  max-width: 42%;
+  margin: 5px;
 }
 
 .App .container div input {

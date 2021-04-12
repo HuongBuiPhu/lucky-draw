@@ -1,0 +1,96 @@
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    background: rgb(67, 157, 241);
+}
+
+.title{
+    margin-left: 10px;
+}
+
+.title i{
+    margin-right: 10px;
+}
+
+.p-right{
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.music-container{
+    margin-right: 25px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    height: 60px;
+    background: rgb(24, 118, 206);
+    border-radius: 10px;
+}
+
+.music-icon{
+    margin-right: 10px;
+}
+
+.audio-selector{
+    border-radius: 5px;
+}
+
+.play-icon{
+    margin-left: 10px;
+}
+
+.menu-icon{
+    margin-right: 15px;
+    font-size: 20px;
+}
+
+.option-menu{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.option-menu .type{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.option-menu .switch{
+    margin-left: 10px;
+}
+
+@media screen{
+    .header{
+        position: relative;
+    }
+
+    .option-menu{
+        display: flex;
+        flex-direction: column;
+        width: 200px;
+        height: 110px;
+        position: absolute;
+        top: 80px;
+        right: 0;
+        opacity: 0;
+        transition: all 0.5s ease;
+    }
+
+    .option-menu.active{
+        background: rgb(67, 157, 241);
+        margin-top: 5px;
+        border-radius: 5px;
+        margin-right: 5px;
+        right: 0;
+        opacity: 1;
+        z-index: 1;
+        transition: all 0.5s ease;
+    }
+}
