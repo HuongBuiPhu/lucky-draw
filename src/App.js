@@ -9,6 +9,7 @@ import Header from './components/Header';
 
 let items = [];
 let eMin = 0, eMax = 0;
+let numRandom = 1;
 
 class App extends Component {
 
@@ -16,7 +17,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      result: 0,
+      result: "Result",
       loading: true,
       disableButton: false,
       background: 1.0,
@@ -34,6 +35,7 @@ class App extends Component {
     this.handleRandom = this.handleRandom.bind(this);
     this.onChange = this.onChange.bind(this);
     this.handleInputFile = this.handleInputFile.bind(this);
+    this.onChangeNumRandom = this.onChangeNumRandom.bind(this);
   }
 
   handleRandom = function () {
@@ -43,14 +45,26 @@ class App extends Component {
       background: 0.3
     });
 
-    let timeout = randomInt(40, 80);
-    setTimeout(() => {
-      this.setState({
-        result: randomInList(items, Header.dup),
-        disableButton: false,
-        background: 1.0
-      });
+    let timeout = randomInt(30, 70);
+    for (let i = 0; i < numRandom; i++) {
+      setTimeout(() => {
+        this.setState({
+          result: i > 0 ? this.state.result + " - " + randomInList(items, Header.dup) : randomInList(items, Header.dup),
+          disableButton: false,
+          background: 1.0
+        });
 
+        if (Header.eff) {
+          this.soundEff.play();
+        }
+
+        console.log(items);
+      }, timeout * 100);
+      timeout += 8;
+    }
+
+    timeout -= 8;
+    setTimeout(() => {
       if (Header.eff) {
         let canvas = document.getElementById("confetti");
         canvas.confetti = canvas.confetti || confetti.create(canvas, { resize: true });
@@ -61,10 +75,7 @@ class App extends Component {
           startVelocity: 20,
           ticks: 75
         });
-        this.soundEff.play();
       }
-
-      console.log(items);
     }, timeout * 100);
 
     this.rDivRect = document.getElementById("result").getBoundingClientRect();
@@ -88,6 +99,12 @@ class App extends Component {
       }
     }
   };
+
+  onChangeNumRandom = function (value) {
+    numRandom = parseInt(value);
+    if (numRandom < 1)
+      numRandom = 1;
+  }
 
   handleInputFile = function (e) {
     const file = e.target.files[0];
@@ -125,7 +142,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header onChangeNumberValue={this.onChange} onInputFile={this.handleInputFile} />
+        <Header onChangeNumberValue={this.onChange} onInputFile={this.handleInputFile}
+          onChangePrize={this.onChangeNumRandom} />
         <div className="container">
           <div className="result-container">
             <canvas id="confetti" className="confetti" width={this.rDivRect.width} height={this.rDivRect.height}

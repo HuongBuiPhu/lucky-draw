@@ -29,9 +29,10 @@ class Header extends Component {
         this.state = {
             min: 0,
             max: 0,
+            numPrize: 1,
             music: currSound,
             playing: false,
-            openMenu: false,
+            openMenu: true,
             inputFile: false,
             duplicate: Header.dup,
             soundEffect: Header.eff,
@@ -46,6 +47,7 @@ class Header extends Component {
         this.onSwitchEffect = this.onSwitchEffect.bind(this);
         this.onChange = this.onChange.bind(this);
         this.handleInputFile = this.handleInputFile.bind(this);
+        this.onChangeNumPrize = this.onChangeNumPrize.bind(this);
     }
 
     onChange = function (e) {
@@ -60,6 +62,14 @@ class Header extends Component {
         }
 
         this.props.onChangeNumberValue(e.target.id, e.target.value);
+    }
+
+    onChangeNumPrize = function (e) {
+        this.setState({
+            numPrize: e.target.value
+        });
+
+        this.props.onChangePrize(e.target.value);
     }
 
     handleInputFile = function (e) {
@@ -198,10 +208,15 @@ class Header extends Component {
                                 handleDiameter={20}
                             />
                         </div>
+                        <div className="num-prize">
+                            <label>Prize number</label>
+                            <input className="step-input" step={1} type="range" max={30} min={1} value={this.state.numPrize} onChange={this.onChangeNumPrize} />
+                            <label>{this.state.numPrize}</label>
+                        </div>
                     </div>
                     <div className="input-data">
                         <div className="type">
-                            <label>Input from file</label>
+                            <label>Import file</label>
                             <Switch id="input-switch"
                                 className="switch"
                                 onChange={this.onSwitchInput}

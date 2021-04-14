@@ -103,7 +103,8 @@
         justify-content: space-between;
         flex-direction: row;
         align-items: center;
-        width: 45%;
+        width: 40%;
+        padding: 20px;
     }
 
     .option{
@@ -111,6 +112,7 @@
         justify-content: space-between;
         flex-direction: row;
         align-items: center;
+        width: 35%;
     }
 
     .type{
@@ -142,6 +144,23 @@
         flex-direction: row; 
         margin-left: 10px;
         margin-right: 10px;
+    }
+
+    .num-prize{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row; 
+        padding: 20px;
+        width: 60%;
+    }
+
+    .num-prize label{
+        margin-left: 5px;
+    }
+
+    .step-input{
+        background:linear-gradient(90deg, #bee21c 60%, #ffffff 60%);
     }
 
     input{
