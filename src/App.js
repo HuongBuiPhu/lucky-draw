@@ -16,13 +16,10 @@ class App extends Component {
     super(props);
 
     this.state = {
-      min: 0,
-      max: 0,
       result: 0,
       loading: true,
       disableButton: false,
       background: 1.0,
-      inputFile: false,
     };
 
     this.soundEff = new Howl({
@@ -37,7 +34,6 @@ class App extends Component {
     this.handleRandom = this.handleRandom.bind(this);
     this.onChange = this.onChange.bind(this);
     this.handleInputFile = this.handleInputFile.bind(this);
-    this.onChangeInputType = this.onChangeInputType.bind(this);
   }
 
   handleRandom = function () {
@@ -46,6 +42,7 @@ class App extends Component {
       disableButton: true,
       background: 0.3
     });
+
     let timeout = randomInt(40, 80);
     setTimeout(() => {
       this.setState({
@@ -54,16 +51,16 @@ class App extends Component {
         background: 1.0
       });
 
-      let canvas = document.getElementById("confetti");
-      canvas.confetti = canvas.confetti || confetti.create(canvas, { resize: true });
-      canvas.confetti({
-        particleCount: 130,
-        spread: 60,
-        origin: { y: 1.0 },
-        startVelocity: 20,
-      });
-
       if (Header.eff) {
+        let canvas = document.getElementById("confetti");
+        canvas.confetti = canvas.confetti || confetti.create(canvas, { resize: true });
+        canvas.confetti({
+          particleCount: 150,
+          spread: 80,
+          origin: { y: 0.75 },
+          startVelocity: 20,
+          ticks: 75
+        });
         this.soundEff.play();
       }
 
@@ -73,17 +70,11 @@ class App extends Component {
     this.rDivRect = document.getElementById("result").getBoundingClientRect();
   };
 
-  onChange = function (e) {
-    if (e.target.id === 'min') {
-      this.setState({
-        min: e.target.value
-      });
-      eMin = parseInt(e.target.value);
-    } else if (e.target.id === "max") {
-      this.setState({
-        max: e.target.value
-      });
-      eMax = parseInt(e.target.value);
+  onChange = function (id, value) {
+    if (id === 'min') {
+      eMin = parseInt(value);
+    } else if (id === "max") {
+      eMax = parseInt(value);
     }
 
     items = [];
@@ -99,10 +90,16 @@ class App extends Component {
   };
 
   handleInputFile = function (e) {
-    const path = e.target.files[0];
+    const file = e.target.files[0];
+    console.log(file);
+    if (!file)
+      return;
+    if (!file.name.endsWith(".xls") && !file.name.endsWith(".xlsx") && !file.name.endsWith(".xlsm")) {
+      return;
+    }
     const promise = new Promise((resolve, reject) => {
       const fileReader = new FileReader();
-      fileReader.readAsArrayBuffer(path);
+      fileReader.readAsArrayBuffer(file);
       fileReader.onload = (err) => {
         const bufferArray = err.target.result;
         const wb = XLSX.read(bufferArray, { type: "buffer" });
@@ -125,33 +122,12 @@ class App extends Component {
     });
   }
 
-  onChangeInputType = function (e) {
-    this.setState({
-      inputFile: e
-    })
-  }
-
   render() {
     return (
       <div className="App">
-        <Header updateInputType={this.onChangeInputType} />
+        <Header onChangeNumberValue={this.onChange} onInputFile={this.handleInputFile} />
         <div className="container">
-          {this.state.inputFile ?
-            <div className="input-file">
-              <input type="file" onChange={this.handleInputFile} />
-            </div> :
-            <div className="option">
-              <div>
-                <p>Min</p>
-                <input id="min" type="number" value={this.state.min} onChange={this.onChange} />
-              </div>
-              <div>
-                <p>Max</p>
-                <input id="max" type="number" value={this.state.max} onChange={this.onChange} />
-              </div>
-            </div>
-          }
-          <div className="result-container" style={{ position: "relative" }}>
+          <div className="result-container">
             <canvas id="confetti" className="confetti" width={this.rDivRect.width} height={this.rDivRect.height}
               style={{ position: "absolute", zIndex: 1 }} />
             <div id="result" className="result">

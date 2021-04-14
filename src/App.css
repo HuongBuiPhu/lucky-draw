@@ -17,70 +17,51 @@ color: #fff;
 
 .App .container {
   width: 100%;
-  max-width: 400px;
   margin: auto;
   padding: 20px;
   display: flex;
+  justify-content: center;
   flex-direction: column;
-  background: #04042b;
-  border-radius: 5px;
 }
 
-.App .container .input-file{
-  background: rgb(154, 201, 228);
-  padding: 30px;
-  color: aliceblue;
-  margin-bottom: 10px;
-  border-radius: 5px;
+.result-container{
+  position: relative;
+  align-items: center;
 }
 
-.App .container .result-container .result {
-  background: cadetblue;
+.result {
+  /* background: rgb(107, 95, 160); */
   padding: 30px;
-  height: 100px;
-  align-content: center;
+  height: 300px;
+  align-items: center;
   border-radius: 10px;
+  display: flex;
+  justify-content: center;
 }
 
-.App .container .result-container .result p {
-color: black;
-font-weight: 600;
-font-size: 30px;
-text-align: center;
+.result p {
+  color: black;
+  font-weight: 600;
+  font-size: 60px;
+  text-align: center;
 }
 
-.App .container .result canvas{
+.result canvas{
   padding: 0;
   margin: 0;
 }
 
-.App .option {
+.button{
   display: flex;
-  justify-content: space-between;
-  padding: 20px 0;
-  margin-bottom: 5px;
-  width: 100%;
+  justify-content: center;
 }
 
-.App .option div {
-  width: 100%;
-  margin: 5px;
-}
-
-.App .container div input {
-  padding: 8px;
-  border: none;
-  outline: none;
-  width: 100%;
-  background: white;
-  color: #04042b;
-}
-
-.App .container button {
+.container button {
   align-self: flex-end;
   border: none;
   outline: none;
   margin-top: 20px;
+  max-width: 300px;
   padding: 14px;
   width: 100%;
   font-size: 22px;

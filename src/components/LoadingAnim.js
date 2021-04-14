@@ -1,10 +1,10 @@
 import React from 'react';
-import { useLoading, ThreeDots } from '@agney/react-loading';
+import { useLoading, ThreeDots, BallTriangle } from '@agney/react-loading';
 
 function LoadingAnim() {
     const { containerProps, indicatorEl } = useLoading({
         loading: true,
-        indicator: <ThreeDots width="50" />,
+        indicator: <BallTriangle width="100" />,
         loaderProps: {
             style: { margin: '0 auto', color: "#ffffff" }
         }
