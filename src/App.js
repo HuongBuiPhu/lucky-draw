@@ -8,6 +8,9 @@ import confetti from 'canvas-confetti';
 import Header from './components/Header';
 
 let items = [];
+let ratio = [];
+let res = [];
+let sum = 0;
 let eMin = 0, eMax = 0;
 let numRandom = 1;
 
@@ -39,6 +42,14 @@ class App extends Component {
   }
 
   handleRandom = function () {
+    res = [];
+    if (items.length <= 0) {
+      this.setState({
+        result: "Empty range!"
+      })
+      return;
+    }
+
     this.setState({
       result: "",
       disableButton: true,
@@ -47,35 +58,39 @@ class App extends Component {
 
     let timeout = randomInt(30, 70);
     for (let i = 0; i < numRandom; i++) {
+      res.push(randomByWeight(Header.dup));
+      console.log(res);
       setTimeout(() => {
         this.setState({
-          result: i > 0 ? this.state.result + '  -  ' + randomInList(items, Header.dup) : randomInList(items, Header.dup),
-          disableButton: false,
-          background: 1.0
+          result: i > 0 ? this.state.result + '  -  ' + res[i] : res[i],
         });
 
         if (Header.eff) {
           this.soundEff.play();
         }
-
-        console.log(items);
       }, timeout * 100);
       timeout += 8;
     }
 
     timeout -= 8;
     setTimeout(() => {
+      this.setState({
+        disableButton: false,
+        background: 1.0
+      });
       if (Header.eff) {
         let canvas = document.getElementById("confetti");
         canvas.confetti = canvas.confetti || confetti.create(canvas, { resize: true });
-        canvas.confetti({
-          particleCount: 150,
-          spread: 80,
-          origin: { y: 0.75 },
-          startVelocity: 20,
-          ticks: 75
-        });
+        // canvas.confetti({
+        //   particleCount: 150,
+        //   spread: 80,
+        //   origin: { y: 0.75 },
+        //   startVelocity: 20,
+        //   ticks: 75
+        // });
+        createConfetti(canvas);
       }
+      console.log(items);
     }, timeout * 100);
 
     this.rDivRect = document.getElementById("result").getBoundingClientRect();
@@ -89,12 +104,18 @@ class App extends Component {
     }
 
     items = [];
+    ratio = [];
+    sum = 0;
     if (eMax <= eMin) {
       items.push(eMin);
+      ratio.push(1);
+      sum = 1;
     } else {
       let i = eMin;
       while (i <= eMax) {
         items.push(i);
+        ratio.push(1);
+        sum++;
         i++;
       }
     }
@@ -109,9 +130,16 @@ class App extends Component {
   handleInputFile = function (e) {
     const file = e.target.files[0];
     console.log(file);
-    if (!file)
+    if (!file) {
+      this.setState({
+        result: "Invalid file!"
+      })
       return;
+    }
     if (!file.name.endsWith(".xls") && !file.name.endsWith(".xlsx") && !file.name.endsWith(".xlsm")) {
+      this.setState({
+        result: "Invalid file!"
+      })
       return;
     }
     const promise = new Promise((resolve, reject) => {
@@ -122,7 +150,7 @@ class App extends Component {
         const wb = XLSX.read(bufferArray, { type: "buffer" });
         const wsName = wb.SheetNames[0];
         const ws = wb.Sheets[wsName];
-        const data = XLSX.utils.sheet_to_json(ws);
+        const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
         resolve(data);
       };
       fileReader.onerror = (error) => {
@@ -133,8 +161,16 @@ class App extends Component {
     promise.then((d) => {
       console.log(d);
       items = [];
+      ratio = [];
+      sum = 0;
       d.forEach(element => {
-        items.push(element.a);
+        items.push(element[0]);
+        let r = 1;
+        if (element[1]) {
+          r = parseInt(element[1]);
+        }
+        ratio.push(r);
+        sum += r;
       });
     });
   }
@@ -170,14 +206,49 @@ function randomInt(minVal, maxVal) {
   return Math.floor(num);
 }
 
+function randomByWeight(canDuplicate) {
+  let weigth = randomInt(1, sum);
+  let index = 0;
+  for (index = 0; index < ratio.length; index++) {
+    weigth -= ratio[index];
+    if (weigth <= 0)
+      break;
+  }
+  if (canDuplicate) {
+    return items[index];
+  } else {
+    sum -= ratio.splice(index, 1)[0];
+    return items.splice(index, 1)[0];
+  }
+}
+
 function randomInList(list, canDuplicate) {
   let size = list.length;
   let index = randomInt(0, size - 1);
   if (!canDuplicate) {
-    return list.splice(index, 1);
+    return list.splice(index, 1)[0];
   } else {
     return list[index];
   }
+}
+
+function createConfetti(canvas) {
+  var colors = ['#bb0000', '#ffffff'];
+
+  canvas.confetti({
+    particleCount: 200,
+    angle: 45,
+    spread: 80,
+    origin: { x: 0.1, y: 0.9 },
+    ticks: 75
+  });
+  canvas.confetti({
+    particleCount: 200,
+    angle: 135,
+    spread: 80,
+    origin: { x: 0.9, y: 0.9 },
+    ticks: 75
+  });
 }
 
 export default App;
