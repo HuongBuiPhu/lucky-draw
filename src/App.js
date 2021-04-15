@@ -49,7 +49,7 @@ class App extends Component {
     for (let i = 0; i < numRandom; i++) {
       setTimeout(() => {
         this.setState({
-          result: i > 0 ? this.state.result + " - " + randomInList(items, Header.dup) : randomInList(items, Header.dup),
+          result: i > 0 ? this.state.result + '  -  ' + randomInList(items, Header.dup) : randomInList(items, Header.dup),
           disableButton: false,
           background: 1.0
         });

@@ -186,8 +186,8 @@ class Header extends Component {
                                 activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
                                 height={15}
                                 width={30}
-                                onColor="#d3ec60"
-                                onHandleColor="#bee21c"
+                                onColor="#86d3ff"
+                                onHandleColor="#2693e6"
                                 handleDiameter={20}
                             />
                         </div>
@@ -203,13 +203,13 @@ class Header extends Component {
                                 activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
                                 height={15}
                                 width={30}
-                                onColor="#d3ec60"
-                                onHandleColor="#bee21c"
+                                onColor="#86d3ff"
+                                onHandleColor="#2693e6"
                                 handleDiameter={20}
                             />
                         </div>
                         <div className="num-prize">
-                            <label>Prize number</label>
+                            <label>Number prize</label>
                             <input className="step-input" step={1} type="range" max={30} min={1} value={this.state.numPrize} onChange={this.onChangeNumPrize} />
                             <label>{this.state.numPrize}</label>
                         </div>
@@ -227,8 +227,8 @@ class Header extends Component {
                                 activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
                                 height={15}
                                 width={30}
-                                onColor="#d3ec60"
-                                onHandleColor="#bee21c"
+                                onColor="#86d3ff"
+                                onHandleColor="#2693e6"
                                 handleDiameter={20}
                             />
                         </div>
