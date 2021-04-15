@@ -182,7 +182,8 @@ class App extends Component {
           onChangePrize={this.onChangeNumRandom} />
         <div className="container">
           <div className="result-container">
-            <canvas id="confetti" className="confetti" width={this.rDivRect.width} height={this.rDivRect.height}
+            <canvas id="confetti" className="confetti"
+              width={this.rDivRect.width} height={this.rDivRect.height}
               style={{ position: "absolute", zIndex: 1 }} />
             <div id="result" className="result">
               <p>
@@ -191,8 +192,10 @@ class App extends Component {
             </div>
           </div>
           <div className="button">
-            <button disabled={this.state.disableButton} style={{ opacity: this.state.background }} onClick={this.handleRandom} >
-              Random
+            <button disabled={this.state.disableButton}
+              style={{ opacity: this.state.background }}
+              onClick={this.handleRandom} >
+              Get Prize
           </button>
           </div>
         </div>
